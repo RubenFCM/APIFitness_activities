@@ -16,6 +16,11 @@ public class Diet {
     @Expose
     private Long id;
 
+    @Column(name = "Name", unique = true, length = 60,nullable = false)
+    @Type(type = "text")
+    @Expose()
+    private String name;
+
     @Column(name = "Description")
     @Type(type="text")
     @Expose
@@ -32,6 +37,8 @@ public class Diet {
         inverseJoinColumns =@JoinColumn(name = "User_id")
     )
     private List<Users> users =new ArrayList<>();
+
+
 
     public Long getId() {
         return id;
@@ -63,5 +70,13 @@ public class Diet {
 
     public void setUsers(List<Users> users) {
         this.users = users;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

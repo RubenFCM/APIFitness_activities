@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface UsersDAOInterface {
 
-    Users create(Users users);
+    Users createUser(Users users);
 
     List<Users> showAll();
 
     Users updateUserID(Users users);
 
     Users searchByID(Long id);
+    boolean deleteUserByID(Long id);
 }

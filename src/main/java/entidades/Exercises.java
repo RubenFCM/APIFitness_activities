@@ -33,7 +33,7 @@ public class Exercises implements Serializable {
     @Column(name = "Difficulty_Level", nullable = false)
     private Integer difficulty_level;
 
-    @OneToMany(mappedBy = "exercise",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exercise",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<TrainingRecords> trainingRecordsList = new ArrayList<>();
 
     public List<TrainingRecords> getTrainingRecordsList() {

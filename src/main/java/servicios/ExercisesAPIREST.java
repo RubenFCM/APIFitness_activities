@@ -5,10 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.*;
 import dto.ExercisesDTO;
-import entidades.ApiKeys;
-import entidades.Diet;
-import entidades.Exercises;
-import entidades.Users;
+import entidades.*;
 import spark.Spark;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -21,15 +18,17 @@ public class ExercisesAPIREST {
     private ApiKeyDAOInterface daoKey;
     private AssociationsDAOInterface daoAssociations;
     private DietDAOInterface daoDiet;
+    private TrainingDAOInterface daoTrainingRecords;
     // Adaptar gson para puder utilizar LocalDate
     private Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).excludeFieldsWithoutExposeAnnotation().create();
 //.disableHtmlEscaping()
-    public ExercisesAPIREST(ExercisesDAOInterface implementacion, UsersDAOInterface implementUsers, AssociationsDAOInterface implementAssociation, DietDAOInterface implementDiet, ApiKeyDAOInterface implementKey){
+    public ExercisesAPIREST(ExercisesDAOInterface implementacion, UsersDAOInterface implementUsers, AssociationsDAOInterface implementAssociation, DietDAOInterface implementDiet,TrainingDAOInterface implementTR, ApiKeyDAOInterface implementKey){
         daoExercises = implementacion;
         daoUsers = implementUsers;
         daoKey = implementKey;
         daoAssociations = implementAssociation;
         daoDiet = implementDiet;
+        daoTrainingRecords = implementTR;
 
         Spark.port(8080);
         Spark.before((request, response) -> {
@@ -95,6 +94,19 @@ public class ExercisesAPIREST {
             List<Exercises> exercises = daoExercises.showAll();
             return gson.toJson(exercises);
         });
+
+        // Endpoint para obtener todas las dietas
+        Spark.get("show/alldiet",(request, response) -> {
+            List<Diet> diets = daoDiet.showAll();
+            return gson.toJson(diets);
+        });
+
+        // Endpoint para obtener todos los entrenamientos registrados
+        Spark.get("show/alltrainingrecords",(request, response) -> {
+            List<TrainingRecords> trainingRecords = daoTrainingRecords.showAll();
+            return  gson.toJson(trainingRecords);
+        });
+
 
         // Endpoint para obtener todas las keys
         Spark.get("/show/allkeys",(request, response) ->{
@@ -219,12 +231,26 @@ public class ExercisesAPIREST {
         Spark.post("/create/user",(request, response) -> {
             String body = request.body();
             Users newUser = gson.fromJson(body, Users.class);
-            Users created = daoUsers.create(newUser);
+            Users created = daoUsers.createUser(newUser);
             System.out.println(created);
             if (created.getId() != null){
                 return gson.toJson(created);
             }else{
                 return "El usuario ya existe.";
+            }
+        });
+
+        // Endpoint para crear una nueva dieta
+
+        Spark.post("/create/diet",(request, response) -> {
+            String body = request.body();
+            Diet newDiet = gson.fromJson(body, Diet.class);
+            Diet created = daoDiet.createDiet(newDiet);
+            System.out.println(created);
+            if (created.getId() != null){
+                return gson.toJson(created);
+            }else{
+                return "La dieta ya existe.";
             }
         });
 
@@ -283,6 +309,21 @@ public class ExercisesAPIREST {
             }
         });
 
+        //Endpoint para actualizar dieta
+        Spark.put("/modify/diet/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            String body = request.body();
+            Diet updateDiet = gson.fromJson(body, Diet.class);
+            updateDiet.setId(id);
+            Diet updated = daoDiet.updateDietByID(updateDiet);
+            if (updated != null) {
+                return gson.toJson(updated);
+            } else {
+                response.status(404);
+                return "Diet not found";
+            }
+        });
+
         // Endpoint para actualizar key por ID
         Spark.put("/modify/key/:id",(request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
@@ -323,6 +364,30 @@ public class ExercisesAPIREST {
                     response.status(404);
                     return "Exercise not found";
                 }
+        });
+
+        // Endpoint para eliminar dieta por su ID
+        Spark.delete("/delete/diet/:id", (request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            boolean deleted = daoDiet.deleteDietByID(id);
+            if (deleted){
+                return "Diet removed correctly";
+            }else {
+                response.status(404);
+                return "Diet not found";
+            }
+        });
+
+        // Endpoint para eliminar usuario por su ID
+        Spark.delete("/delete/user/:id", (request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            boolean deleted = daoUsers.deleteUserByID(id);
+            if (deleted){
+                return "User removed correctly";
+            }else {
+                response.status(404);
+                return "User not found";
+            }
         });
 
         // Endpoint para eliminar una key por su ID

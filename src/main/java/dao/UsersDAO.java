@@ -1,6 +1,7 @@
 package dao;
 
 
+import entidades.Diet;
 import entidades.Users;
 import org.hibernate.Session;
 import util.HibernateUtil;
@@ -12,7 +13,7 @@ import java.util.List;
 public class UsersDAO implements UsersDAOInterface{
 
     @Override
-    public Users create(Users users) {
+    public Users createUser(Users users) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
@@ -66,5 +67,27 @@ public class UsersDAO implements UsersDAOInterface{
         session.close();
 
         return user;
+    }
+
+    @Override
+    public boolean deleteUserByID(Long id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Users user = this.searchByID(id);
+            if (user!=null){
+                session.delete(user);
+            }else {
+                return false;
+            }
+            session.getTransaction().commit();
+        }catch (PersistenceException pe){
+            pe.printStackTrace();
+            session.beginTransaction().rollback();
+            return false;
+        }finally {
+            session.close();
+        }
+        return true;
     }
 }

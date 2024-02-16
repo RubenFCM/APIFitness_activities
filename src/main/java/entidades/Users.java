@@ -49,7 +49,7 @@ public class Users implements Serializable {
     @Expose
     private Double imc;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     private List<TrainingRecords> trainingRecordsList = new ArrayList<>();
 
     //Relacion entre los usuarios y dietas
