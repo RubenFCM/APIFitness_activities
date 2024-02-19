@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "TrainingRecords")
 public class TrainingRecords implements Serializable {
+
     //atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +17,11 @@ public class TrainingRecords implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="User_id",foreignKey = @ForeignKey(name = "fk_user_id"))
+    @JoinColumn(name="User_id",nullable = false, foreignKey = @ForeignKey(name = "fk_user_id"))
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="Exercise_id",foreignKey = @ForeignKey(name = "fk_exercise_id"))
+    @JoinColumn(name="Exercise_id",nullable = false, foreignKey = @ForeignKey(name = "fk_exercise_id"))
     private Exercises exercise;
 
     @Column(name = "Datef")

@@ -1,5 +1,7 @@
 package entidades;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,24 +15,31 @@ public class Exercises implements Serializable {
     //atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private Long id;
 
     @Column(name = "Name",nullable = false,unique = true, length = 60)
+    @Expose
     private String name;
 
     @Column(name = "Muscle_Group",nullable = false,length = 60)
+    @Expose
     private String muscle_group;
 
     @Column(name = "Creation_Date")
+    @Expose
     private LocalDate creation_date;
 
     @Column(name = "Image")
+    @Expose
     private String url_image;
 
     @Column(name = "Description")
+    @Expose
     private String description;
 
     @Column(name = "Difficulty_Level", nullable = false)
+    @Expose
     private Integer difficulty_level;
 
     @OneToMany(mappedBy = "exercise",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

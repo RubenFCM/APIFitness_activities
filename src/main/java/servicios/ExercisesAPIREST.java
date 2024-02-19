@@ -107,7 +107,6 @@ public class ExercisesAPIREST {
             return  gson.toJson(trainingRecords);
         });
 
-
         // Endpoint para obtener todas las keys
         Spark.get("/show/allkeys",(request, response) ->{
             List<ApiKeys> keys = daoKey.showAll();
@@ -201,7 +200,11 @@ public class ExercisesAPIREST {
             Long id = Long.parseLong(request.params(":id"));
             Diet d = daoDiet.searchById(id);
             List<Users> u = daoAssociations.usersWithDiet(d);
-            return gson.toJson(u);
+            if (u != null ){
+                return gson.toJson(u);
+            }else {
+                return "Diet not found";
+            }
         });
 
 //         Endpoint obtener dietas de un usuario
@@ -209,9 +212,62 @@ public class ExercisesAPIREST {
             Long id = Long.parseLong(request.params(":id"));
             Users u = daoUsers.searchByID(id);
             List<Diet> d = daoAssociations.dietOfUser(u);
-            return gson.toJson(d);
+            if (d != null ){
+                return gson.toJson(d);
+            }else {
+                return "User not found";
+            }
+
         });
 
+//          Endpoint para obtener los entrenamientos registrados de un usuario
+        Spark.get("/show/user/trainingrecord/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            Users u = daoUsers.searchByID(id);
+            List<TrainingRecords> tr = daoAssociations.trainingsUser(u);
+            if (tr!=null){
+                return gson.toJson(tr);
+            }else {
+                return "User not found";
+            }
+        });
+
+//          Endpoint para obtener los entrenamientos registrados que use un ejercicio
+        Spark.get("/show/exercise/trainingrecord/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            Exercises e = daoExercises.searchByID(id);
+            List<TrainingRecords> tr = daoAssociations.traiginsExercise(e);
+            if (tr!=null){
+                return gson.toJson(tr);
+            }else {
+                return "Exercise not found";
+            }
+
+        });
+//          Endpoint para obtener usuario que ha realizado el entrenamiento
+        Spark.get("/show/trainingrecord/user/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            TrainingRecords tr =daoTrainingRecords.searchById(id);
+            Users u = daoAssociations.showUserPerformedTraining(tr);
+            if (u!=null){
+                return gson.toJson(u);
+            }else {
+                return "Training record not found";
+            }
+
+        });
+//          Endpoint para obtener el ejercicio que ha sido utilizado en el entrenamiento
+        Spark.get("/show/trainingrecord/exercise/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            TrainingRecords tr = daoTrainingRecords.searchById(id);
+            Exercises e = daoAssociations.showExerciseUsedTraining(tr);
+            if (e!=null){
+                return gson.toJson(e);
+            }else {
+                return "Training record not found";
+            }
+
+        });
 
 //==================================  Endpoints POST  ============================================
 
@@ -251,6 +307,20 @@ public class ExercisesAPIREST {
                 return gson.toJson(created);
             }else{
                 return "La dieta ya existe.";
+            }
+        });
+
+        // Endpoint para crear un nuevo entrenamiento
+
+        Spark.post("/create/trainingrecords",(request, response) -> {
+            String body = request.body();
+            TrainingRecords newTraining = gson.fromJson(body, TrainingRecords.class);
+            TrainingRecords created = daoTrainingRecords.createTraining(newTraining);
+            System.out.println(created);
+            if (created.getExercise() != null && created.getUser() != null){
+                return gson.toJson(created);
+            }else{
+                return "Error inserting training.";
             }
         });
 
@@ -324,6 +394,21 @@ public class ExercisesAPIREST {
             }
         });
 
+        //Endpoint para actualizar entrenamiento
+        Spark.put("/modify/trainingrecord/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            String body = request.body();
+            TrainingRecords updateTraining = gson.fromJson(body, TrainingRecords.class);
+            updateTraining.setId(id);
+            TrainingRecords updated = daoTrainingRecords.updateTrainingtByID(updateTraining);
+            if (updated != null) {
+                return gson.toJson(updated);
+            } else {
+                response.status(404);
+                return "Training record not found";
+            }
+        });
+
         // Endpoint para actualizar key por ID
         Spark.put("/modify/key/:id",(request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
@@ -387,6 +472,18 @@ public class ExercisesAPIREST {
             }else {
                 response.status(404);
                 return "User not found";
+            }
+        });
+
+        // Endpoint para eliminar entrenamiento por su ID
+        Spark.delete("/delete/trainingrecord/:id", (request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            boolean deleted = daoTrainingRecords.deleteTrainingByID(id);
+            if (deleted){
+                return "Training record removed correctly";
+            }else {
+                response.status(404);
+                return "Training record not found";
             }
         });
 
