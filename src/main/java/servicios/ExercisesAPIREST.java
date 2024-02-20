@@ -123,6 +123,16 @@ public class ExercisesAPIREST {
             return  gson.toJson(result);
         });
 
+        //Endpoint para obtener todas las dietas paginado
+//        Spark.get("/show/pagediets/:page/:size",(request, response) -> {
+//            Integer page = Integer.parseInt(request.params(":page"));
+//            Integer size = Integer.parseInt(request.params(":size"));
+//            List<Diet> diets = daoDiet.showAll(page,size);
+//            Long allItems = daoDiet.totalDiets();
+//            PaginationResponse<Diet> result = new PaginationResponse<>(diets,allItems,page,size);
+//            return  gson.toJson(result);
+//        });
+
         //Endpoint para devolver ejercicios ordenados por dificultad
         Spark.get("/show/difficulty",(request, response) -> {
             List<Exercises> exercises = daoExercises.showSortedDifficulty();

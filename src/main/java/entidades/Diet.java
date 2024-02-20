@@ -38,7 +38,16 @@ public class Diet {
     )
     private List<Users> users =new ArrayList<>();
 
+    public Diet() {
+    }
 
+    public Diet(Long id, String name, String description, double calories, List<Users> users) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.calories = calories;
+        this.users = users;
+    }
 
     public Long getId() {
         return id;
