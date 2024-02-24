@@ -10,9 +10,9 @@ public interface TrainingDAOInterface {
 
     List<TrainingRecords> showAll();
 
-    TrainingRecords createTraining (TrainingRecords trainingRecord);
+//    TrainingRecords createTraining (TrainingRecords trainingRecord);
 
-    TrainingRecords updateTrainingtByID(TrainingRecords trainingRecord);
+//    TrainingRecords updateTrainingtByID(TrainingRecords trainingRecord);
 
     boolean deleteTrainingByID(Long id);
 

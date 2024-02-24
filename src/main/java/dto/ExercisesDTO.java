@@ -1,7 +1,11 @@
 package dto;
 
+import com.google.gson.annotations.Expose;
+
 public class ExercisesDTO {
+    @Expose
     private String name, url_image;
+    @Expose
     private Integer difficultyLevel;
 
     public ExercisesDTO() {

@@ -26,4 +26,7 @@ public interface AssociationsDAOInterface {
 
     boolean assignDietToUser(Diet d, Users u);
 
+    TrainingRecords updateTrainingtByID(TrainingRecords trainingRecord,Users u, Exercises e);
+    TrainingRecords createTraining (TrainingRecords trainingRecord,Users u, Exercises e);
+
 }

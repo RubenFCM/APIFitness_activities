@@ -124,14 +124,14 @@ public class ExercisesAPIREST {
         });
 
         //Endpoint para obtener todas las dietas paginado
-//        Spark.get("/show/pagediets/:page/:size",(request, response) -> {
-//            Integer page = Integer.parseInt(request.params(":page"));
-//            Integer size = Integer.parseInt(request.params(":size"));
-//            List<Diet> diets = daoDiet.showAll(page,size);
-//            Long allItems = daoDiet.totalDiets();
-//            PaginationResponse<Diet> result = new PaginationResponse<>(diets,allItems,page,size);
-//            return  gson.toJson(result);
-//        });
+        Spark.get("/show/pagediets/:page/:size",(request, response) -> {
+            Integer page = Integer.parseInt(request.params(":page"));
+            Integer size = Integer.parseInt(request.params(":size"));
+            List<Diet> diets = daoDiet.showAll(page,size);
+            Long allItems = daoDiet.totalDiets();
+            PaginationResponse<Diet> result = new PaginationResponse<>(diets,allItems,page,size);
+            return  gson.toJson(result);
+        });
 
         //Endpoint para devolver ejercicios ordenados por dificultad
         Spark.get("/show/difficulty",(request, response) -> {
@@ -320,19 +320,7 @@ public class ExercisesAPIREST {
             }
         });
 
-        // Endpoint para crear un nuevo entrenamiento
 
-        Spark.post("/create/trainingrecords",(request, response) -> {
-            String body = request.body();
-            TrainingRecords newTraining = gson.fromJson(body, TrainingRecords.class);
-            TrainingRecords created = daoTrainingRecords.createTraining(newTraining);
-            System.out.println(created);
-            if (created.getExercise() != null && created.getUser() != null){
-                return gson.toJson(created);
-            }else{
-                return "Error inserting training.";
-            }
-        });
 
         // Endpoint para agregar un nuevo apikey
         Spark.post("/create/key",(request, response) -> {
@@ -348,6 +336,7 @@ public class ExercisesAPIREST {
         });
 
 //Relacionados
+
 //        Endpoint para asignar dieta a un usuario
         Spark.post("/create/users/diet/:userid/:dietid",(request, response) -> {
             Long idUser = Long.parseLong(request.params(":userid"));
@@ -355,6 +344,23 @@ public class ExercisesAPIREST {
             Users u = daoUsers.searchByID(idUser);
             Diet d = daoDiet.searchById(idDiet);
             return gson.toJson(daoAssociations.assignDietToUser(d,u));
+        });
+
+        // Endpoint para crear un nuevo entrenamiento
+        Spark.post("/create/trainingrecords/:userid/:exerciseid",(request, response) -> {
+            String body = request.body();
+            Long idUser = Long.parseLong(request.params(":userid"));
+            Long idExercise = Long.parseLong(request.params(":exerciseid"));
+            Users u = daoUsers.searchByID(idUser);
+            Exercises e = daoExercises.searchByID(idExercise);
+            TrainingRecords newTraining = gson.fromJson(body, TrainingRecords.class);
+            TrainingRecords created = daoAssociations.createTraining(newTraining,u,e);
+            System.out.println(created);
+            if (created.getExercise() != null && created.getUser() != null){
+                return gson.toJson(created);
+            }else{
+                return "Error inserting training.";
+            }
         });
 
 //==================================  Endpoints PUT  ============================================
@@ -405,12 +411,16 @@ public class ExercisesAPIREST {
         });
 
         //Endpoint para actualizar entrenamiento
-        Spark.put("/modify/trainingrecord/:id",(request, response) -> {
+        Spark.put("/modify/trainingrecord/:id/:userid/:exerciseid",(request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
             String body = request.body();
+            Long idUser = Long.parseLong(request.params(":userid"));
+            Long idExercise = Long.parseLong(request.params(":exerciseid"));
+            Users u = daoUsers.searchByID(idUser);
+            Exercises e = daoExercises.searchByID(idExercise);
             TrainingRecords updateTraining = gson.fromJson(body, TrainingRecords.class);
             updateTraining.setId(id);
-            TrainingRecords updated = daoTrainingRecords.updateTrainingtByID(updateTraining);
+            TrainingRecords updated =daoAssociations.updateTrainingtByID(updateTraining,u,e);
             if (updated != null) {
                 return gson.toJson(updated);
             } else {

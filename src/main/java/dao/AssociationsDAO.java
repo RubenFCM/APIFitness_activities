@@ -144,4 +144,37 @@ public class AssociationsDAO implements AssociationsDAOInterface{
         session.close();
         return true;
     }
+    @Override
+    public TrainingRecords createTraining(TrainingRecords trainingRecord,Users u, Exercises e) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trainingRecord.setUser(u);
+            trainingRecord.setExercise(e);
+            session.beginTransaction();
+            session.save(trainingRecord);
+            session.getTransaction().commit();
+        }catch (PersistenceException pe){
+            pe.printStackTrace();
+            session.getTransaction().rollback();
+        }
+        session.close();
+        return trainingRecord;
+    }
+    @Override
+    public TrainingRecords updateTrainingtByID(TrainingRecords trainingRecord,Users u, Exercises e) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trainingRecord.setUser(u);
+            trainingRecord.setExercise(e);
+            session.beginTransaction();
+            session.update(trainingRecord);
+            session.getTransaction().commit();
+        }catch (PersistenceException pe){
+            pe.printStackTrace();
+            session.getTransaction().rollback();
+            return null;
+        }
+        session.close();
+        return trainingRecord;
+    }
 }

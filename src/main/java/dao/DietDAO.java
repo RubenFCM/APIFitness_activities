@@ -46,25 +46,25 @@ public class DietDAO implements DietDAOInterface{
         return all;
     }
 
-//    @Override
-//    public List<Diet> showAll(int page, int size) {
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        Query query = session.createQuery("from Diet", Diet.class);
-//        query.setMaxResults(size);
-//        query.setFirstResult((page-1)*size);
-//        List<Diet> diets = query.list();
-//        session.close();
-//        return diets;
-//    }
-//
-//    @Override
-//    public Long totalDiets(){
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        Query<Long> query = session.createQuery("select count(d) from Diet d", Long.class);
-//        Long counter = query.getSingleResult();
-//        session.close();
-//        return counter;
-//    }
+    @Override
+    public List<Diet> showAll(int page, int size) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createQuery("from Diet", Diet.class);
+        query.setMaxResults(size);
+        query.setFirstResult((page-1)*size);
+        List<Diet> diets = query.list();
+        session.close();
+        return diets;
+    }
+
+    @Override
+    public Long totalDiets(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Query<Long> query = session.createQuery("select count(d) from Diet d", Long.class);
+        Long counter = query.getSingleResult();
+        session.close();
+        return counter;
+    }
 
     @Override
     public Diet updateDietByID(Diet diet) {
