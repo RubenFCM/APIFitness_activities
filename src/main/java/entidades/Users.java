@@ -56,21 +56,9 @@ public class Users implements Serializable {
     @ManyToMany(mappedBy = "users")
     private List<Diet> diets = new ArrayList<>();
 
-    public List<TrainingRecords> getTrainingRecordsList() {
-        return trainingRecordsList;
-    }
-
-    public List<Diet> getDiets() {
-        return diets;
-    }
-
-    public void setDiets(List<Diet> diets) {
-        this.diets = diets;
-    }
-
-    public void setTrainingRecordsList(List<TrainingRecords> trainingRecordsList) {
-        this.trainingRecordsList = trainingRecordsList;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn( name = "Country_id",nullable = true, foreignKey = @ForeignKey(name = "fk_country_id"))
+    private Country country;
 
     public Users(Long id, String name, String last_name, String email, LocalDate registration_date, Double weight, Double height, String photo, Double imc) {
         this.id = id;
@@ -157,6 +145,30 @@ public class Users implements Serializable {
 
     public void setImc(Double imc) {
         this.imc = imc;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public List<TrainingRecords> getTrainingRecordsList() {
+        return trainingRecordsList;
+    }
+
+    public List<Diet> getDiets() {
+        return diets;
+    }
+
+    public void setDiets(List<Diet> diets) {
+        this.diets = diets;
+    }
+
+    public void setTrainingRecordsList(List<TrainingRecords> trainingRecordsList) {
+        this.trainingRecordsList = trainingRecordsList;
     }
 
     @Override

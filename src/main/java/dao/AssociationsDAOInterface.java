@@ -1,9 +1,6 @@
 package dao;
 
-import entidades.Diet;
-import entidades.Exercises;
-import entidades.TrainingRecords;
-import entidades.Users;
+import entidades.*;
 
 import java.util.List;
 
@@ -17,6 +14,12 @@ public interface AssociationsDAOInterface {
     Exercises showExerciseUsedTraining(TrainingRecords trainingRecords);
 
     List<TrainingRecords> traiginsExercise(Exercises e);
+
+    Country showCountryUser(Users u);
+
+    List<Users> showUsersCountry(Country c);
+
+    boolean assignCountryToUser(Country c, Users u);
 
     //----------------------RELACION M a N --------------
 

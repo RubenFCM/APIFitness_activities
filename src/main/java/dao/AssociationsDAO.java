@@ -1,9 +1,6 @@
 package dao;
 
-import entidades.Diet;
-import entidades.Exercises;
-import entidades.TrainingRecords;
-import entidades.Users;
+import entidades.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import util.HibernateUtil;
@@ -79,6 +76,37 @@ public class AssociationsDAO implements AssociationsDAOInterface{
         return  list_training;
     }
 
+    @Override
+    public Country showCountryUser(Users u) {
+        Country country = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query<Users> query = session.createQuery("select u from Users u join fetch u.country where u.id =:id", Users.class);
+            query.setParameter("id",u.getId());
+            country = query.getSingleResult().getCountry();
+        }catch (NoResultException | NullPointerException nre){
+            nre.printStackTrace();
+            return null;
+        }
+        session.close();
+        return country;
+    }
+
+    @Override
+    public List<Users> showUsersCountry(Country c) {
+        List<Users> list_users = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Query<Country> query = session.createQuery("select c from Country c join fetch c.usersList where c.id =:id", Country.class);
+            query.setParameter("id", c.getId());
+            list_users = query.getSingleResult().getUsersList();
+        }catch (NoResultException | NullPointerException nre){
+            nre.printStackTrace();
+            return  null;
+        }
+        session.close();
+        return  list_users;
+    }
 
     @Override
     public List<Users> usersWithDiet(Diet d) {
@@ -144,6 +172,24 @@ public class AssociationsDAO implements AssociationsDAOInterface{
         session.close();
         return true;
     }
+    @Override
+    public boolean assignCountryToUser(Country c, Users u) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            u.setCountry(c);
+            session.update(u);
+            session.getTransaction().commit();
+        }catch (PersistenceException | NullPointerException e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+            return false;
+        }
+        session.close();
+        return true;
+    }
+
+
     @Override
     public TrainingRecords createTraining(TrainingRecords trainingRecord,Users u, Exercises e) {
         Session session = HibernateUtil.getSessionFactory().openSession();

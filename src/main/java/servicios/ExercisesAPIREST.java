@@ -19,16 +19,18 @@ public class ExercisesAPIREST {
     private AssociationsDAOInterface daoAssociations;
     private DietDAOInterface daoDiet;
     private TrainingDAOInterface daoTrainingRecords;
+    private CountryDAOInterface daoCountry;
     // Adaptar gson para puder utilizar LocalDate
     private Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).excludeFieldsWithoutExposeAnnotation().create();
 //.disableHtmlEscaping()
-    public ExercisesAPIREST(ExercisesDAOInterface implementacion, UsersDAOInterface implementUsers, AssociationsDAOInterface implementAssociation, DietDAOInterface implementDiet,TrainingDAOInterface implementTR, ApiKeyDAOInterface implementKey){
+    public ExercisesAPIREST(ExercisesDAOInterface implementacion, UsersDAOInterface implementUsers, AssociationsDAOInterface implementAssociation, DietDAOInterface implementDiet,TrainingDAOInterface implementTR,CountryDAOInterface implementCountry, ApiKeyDAOInterface implementKey){
         daoExercises = implementacion;
         daoUsers = implementUsers;
         daoKey = implementKey;
         daoAssociations = implementAssociation;
         daoDiet = implementDiet;
         daoTrainingRecords = implementTR;
+        daoCountry = implementCountry;
 
         Spark.port(8080);
         Spark.before((request, response) -> {
@@ -107,6 +109,12 @@ public class ExercisesAPIREST {
             return  gson.toJson(trainingRecords);
         });
 
+        // Endpoint para obtener todos los paises
+        Spark.get("show/allcountry",(request, response) -> {
+            List<Country> countries = daoCountry.showAll();
+            return  gson.toJson(countries);
+        });
+
         // Endpoint para obtener todas las keys
         Spark.get("/show/allkeys",(request, response) ->{
             List<ApiKeys> keys = daoKey.showAll();
@@ -130,6 +138,16 @@ public class ExercisesAPIREST {
             List<Diet> diets = daoDiet.showAll(page,size);
             Long allItems = daoDiet.totalDiets();
             PaginationResponse<Diet> result = new PaginationResponse<>(diets,allItems,page,size);
+            return  gson.toJson(result);
+        });
+
+        //Endpoint para obtener todas los paises paginados
+        Spark.get("/show/pagecountries/:page/:size",(request, response) -> {
+            Integer page = Integer.parseInt(request.params(":page"));
+            Integer size = Integer.parseInt(request.params(":size"));
+            List<Country> countries = daoCountry.showAll(page,size);
+            Long allItems = daoCountry.totalCountries();
+            PaginationResponse<Country> result = new PaginationResponse<>(countries,allItems,page,size);
             return  gson.toJson(result);
         });
 
@@ -276,7 +294,30 @@ public class ExercisesAPIREST {
             }else {
                 return "Training record not found";
             }
+        });
 
+//          Endpoint para obtener usuarios de un pais
+        Spark.get("/show/country/users/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            Country c = daoCountry.searchById(id);
+            List<Users> u = daoAssociations.showUsersCountry(c);
+            if (u!=null){
+                return gson.toJson(u);
+            }else {
+                return "Country not found";
+            }
+        });
+
+//          Endpoint para obtener pais de un usuario
+        Spark.get("/show/users/country/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            Users u = daoUsers.searchByID(id);
+            Country c = daoAssociations.showCountryUser(u);
+            if (c!=null){
+                return gson.toJson(c);
+            }else {
+                return "User not found or unassigned country";
+            }
         });
 
 //==================================  Endpoints POST  ============================================
@@ -335,6 +376,19 @@ public class ExercisesAPIREST {
             }
         });
 
+        // Endpoint para agregar un nuevo pais
+        Spark.post("/create/country",(request, response) -> {
+            String body = request.body();
+            Country newCountry = gson.fromJson(body, Country.class);
+            Country created = daoCountry.createCountry(newCountry);
+            System.out.println(created);
+            if (created.getId() != null){
+                return gson.toJson(created);
+            }else{
+                return "El pais ya existe.";
+            }
+        });
+
 //Relacionados
 
 //        Endpoint para asignar dieta a un usuario
@@ -346,7 +400,16 @@ public class ExercisesAPIREST {
             return gson.toJson(daoAssociations.assignDietToUser(d,u));
         });
 
-        // Endpoint para crear un nuevo entrenamiento
+//        Endpoint para asignar pais a un usuario
+        Spark.post("/create/users/country/:userid/:countryid",(request, response) -> {
+            Long idUser = Long.parseLong(request.params(":userid"));
+            Long idDiet = Long.parseLong(request.params(":countryid"));
+            Users u = daoUsers.searchByID(idUser);
+            Country c = daoCountry.searchById(idDiet);
+            return gson.toJson(daoAssociations.assignCountryToUser(c,u));
+        });
+
+//        Endpoint para crear un nuevo entrenamiento
         Spark.post("/create/trainingrecords/:userid/:exerciseid",(request, response) -> {
             String body = request.body();
             Long idUser = Long.parseLong(request.params(":userid"));
@@ -444,6 +507,21 @@ public class ExercisesAPIREST {
             }
         });
 
+        // Endpoint para actualizar pais por ID
+        Spark.put("/modify/country/:id",(request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            String body = request.body();
+            Country updatedCountry = gson.fromJson(body,Country.class);
+            updatedCountry.setId(id);
+            Country updated = daoCountry.updateCountryByID(updatedCountry);
+            if (updated != null) {
+                return gson.toJson(updated);
+            } else {
+                response.status(404);
+                return "Country not found";
+            }
+        });
+
 
 //==================================  Endpoints DELETE  ==========================================
 
@@ -516,6 +594,18 @@ public class ExercisesAPIREST {
             }else {
                 response.status(404);
                 return "Key not found";
+            }
+        });
+
+        // Endpoint para eliminar un pais por su ID
+        Spark.delete("/delete/country/:id", (request, response) -> {
+            Long id = Long.parseLong(request.params(":id"));
+            boolean deleted = daoCountry.deleteCountryByID(id);
+            if (deleted){
+                return "Country removed correctly";
+            }else {
+                response.status(404);
+                return "Country not found";
             }
         });
 

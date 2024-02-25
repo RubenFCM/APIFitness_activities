@@ -24,6 +24,7 @@
         <mapping class="entidades.Users"/>
         <mapping class="entidades.TrainingRecords"/>
         <mapping class="entidades.Diet"/>
+        <mapping class="entidades.Country"/>
 
     </session-factory>
 </hibernate-configuration>
