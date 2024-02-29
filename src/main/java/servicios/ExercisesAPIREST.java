@@ -272,6 +272,7 @@ public class ExercisesAPIREST {
             }
 
         });
+
 //          Endpoint para obtener usuario que ha realizado el entrenamiento
         Spark.get("/show/trainingrecord/user/:id",(request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
@@ -284,6 +285,7 @@ public class ExercisesAPIREST {
             }
 
         });
+
 //          Endpoint para obtener el ejercicio que ha sido utilizado en el entrenamiento
         Spark.get("/show/trainingrecord/exercise/:id",(request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
@@ -444,12 +446,14 @@ public class ExercisesAPIREST {
         });
 
         // Endpoint para actualizar usuario por ID
-        Spark.put("/modify/user/:id",(request, response) -> {
+        Spark.put("/modify/user/:id/:idcountry",(request, response) -> {
             Long id = Long.parseLong(request.params(":id"));
+            Long idcountry = Long.parseLong(request.params(":idcountry"));
+            Country country = daoCountry.searchById(idcountry);
             String body = request.body();
             Users updatedUser = gson.fromJson(body,Users.class);
             updatedUser.setId(id);
-            Users updated = daoUsers.updateUserID(updatedUser);
+            Users updated = daoAssociations.updateUserID(updatedUser, country);
             if (updated != null) {
                 return gson.toJson(updated);
             } else {

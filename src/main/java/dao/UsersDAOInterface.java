@@ -1,5 +1,6 @@
 package dao;
 
+import entidades.Country;
 import entidades.Exercises;
 import entidades.Users;
 

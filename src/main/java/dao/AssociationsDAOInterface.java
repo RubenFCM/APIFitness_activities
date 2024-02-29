@@ -21,7 +21,10 @@ public interface AssociationsDAOInterface {
 
     boolean assignCountryToUser(Country c, Users u);
 
+
     //----------------------RELACION M a N --------------
+
+    Users updateUserID(Users users, Country country);
 
     List<Users> usersWithDiet(Diet d);
 

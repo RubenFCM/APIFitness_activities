@@ -6,6 +6,7 @@ import org.hibernate.query.Query;
 import util.HibernateUtil;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,5 +223,25 @@ public class AssociationsDAO implements AssociationsDAOInterface{
         }
         session.close();
         return trainingRecord;
+    }
+
+    @Override
+    public Users updateUserID(Users users, Country country) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            users.setRegistration_date(LocalDate.now());
+            double imc = users.getWeight() / Math.pow(users.getHeight(),2);
+            users.setImc((double) Math.round(imc * 10) / 10);
+            users.setCountry(country);
+            session.update(users);
+            session.getTransaction().commit();
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+        session.close();
+        return users;
     }
 }
