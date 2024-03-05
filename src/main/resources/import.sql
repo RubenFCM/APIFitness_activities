@@ -23,17 +23,33 @@ INSERT INTO Exercises (Name, Muscle_group, Creation_date, Image, Description, Di
 INSERT INTO Exercises (Name, Muscle_group, Creation_date, Image, Description, Difficulty_Level) VALUES ('Flexiones de tríceps', 'Brazo', '2024-11-15', 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/flexiones_de_triceps.jpg?alt=media&token=fb143258-7061-4b38-9ee3-033a14a14c36', 'Ejercicio para trabajar los tríceps', 4);
 INSERT INTO Exercises (Name, Muscle_group, Creation_date, Image, Description, Difficulty_Level) VALUES ('Plancha con elevación de pierna', 'Abdominales', '2024-12-01', 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/plancha_elevacion_pierna.jpg?alt=media&token=413476ac-d6ea-479d-941f-d7d4c9dd27f0', 'Ejercicio para fortalecer el core y glúteos', 3);
 
-INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Juan', 'Perez Gomez', 'juan.perez@email.com', 70.5, 1.75, 'URL_Foto_Juan',23,'2023-05-21');
-INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Maria', 'Lopez Rodriguez', 'maria.lopez@email.com', 60.2, 1.60, 'URL_Foto_Maria',23.5,'2022-09-15');
-INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Carlos', 'Gonzalez Sanchez', 'carlos.gonzalez@email.com', 80.0, 1.80, 'URL_Foto_Carlos',24.6, '2023-02-08');
-INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Ana', 'Martinez Ruiz', 'ana.martinez@email.com', 55.8, 1.65, 'URL_Foto_Ana',20.5,'2022-11-30');
-INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Javier', 'Hernandez Diaz', 'javier.hernandez@email.com', 75.3, 1.78, 'URL_Foto_Javier',23.8,'2023-07-12');
+INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Juan', 'Perez Gomez', 'juan.perez@email.com', 70.5, 1.75, 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/Juan.jpg?alt=media&token=ba03d21b-0e22-4bf8-836b-66612f95d46a',23,'2023-05-21');
+INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Maria', 'Lopez Rodriguez', 'maria.lopez@email.com', 60.2, 1.60, 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/Maria.jpg?alt=media&token=dcb00092-7b28-493e-b2be-895b9839333b',23.5,'2022-09-15');
+INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Carlos', 'Gonzalez Sanchez', 'carlos.gonzalez@email.com', 80.0, 1.80, 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/Carlos.jpg?alt=media&token=ae680093-2e45-41ed-b633-0e33471a2e3c',24.6, '2023-02-08');
+INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Ana', 'Martinez Ruiz', 'ana.martinez@email.com', 55.8, 1.65, 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/Ana.jpg?alt=media&token=44889ea9-8c5f-42a0-bc1e-4ef2b1895d29',20.5,'2022-11-30');
+INSERT INTO Users (Name, LastName, Email, Weight, Height, Photo, IMC, Registration_Date) VALUES ('Javier', 'Hernandez Diaz', 'javier.hernandez@email.com', 75.3, 1.78, 'https://firebasestorage.googleapis.com/v0/b/fitnessactivities-46a39.appspot.com/o/Javier.jpg?alt=media&token=7de82c5a-63ea-42ad-8b42-23e74bb572e7',23.8,'2023-07-12');
 
-INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent,Number_series,Number_repetition,Calories_burned) VALUES (1,2,'2023-07-12',23,4,12,320)
-INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent,Number_series,Number_repetition,Calories_burned) VALUES (1,21,'2023-07-12',23,4,12,320)
-INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent,Number_series,Number_repetition,Calories_burned) VALUES (1,14,'2023-07-12',23,4,12,320)
-INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent,Number_series,Number_repetition,Calories_burned) VALUES (3,14,'2023-07-12',23,4,12,320)
-INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent,Number_series,Number_repetition,Calories_burned) VALUES (2,14,'2023-07-12',23,4,12,320)
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (1,2,'2023-07-12',23,4,12,320)
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (1,21,'2023-07-12',23,4,12,320)
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (1,14,'2023-07-12',23,4,12,320)
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (3,14,'2023-07-12',23,4,12,320)
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (2,14,'2023-07-12',23,4,12,320)
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (2,5,'2023-07-13',30,3, 15, 400);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (3,9,'2023-07-14',25,5, 10, 280);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (1,15,'2023-07-15',20,4, 8, 240);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (5,20,'2023-07-16',35,6, 12, 480);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (4,3,'2023-07-17',40,5, 15, 600);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (2,18,'2023-07-18',22,3, 10, 320);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (3,7,'2023-07-19',28,4, 12, 350);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (1,21,'2023-07-20',27,5, 13, 380);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (5,12,'2023-07-21',31,6, 14, 500);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (4,23,'2023-07-22',33,4, 16, 520);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (3, 4, '2023-07-23', 26, 3, 11, 340);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (1, 16, '2023-07-24', 29, 4, 14, 420);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (2, 22, '2023-07-25', 32, 5, 17, 550);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (4, 1, '2023-07-26', 27, 4, 13, 380);
+INSERT INTO TrainingRecords (User_id, Exercise_id, Datef, Time_spent, Number_series, Number_repetition, Calories_burned) VALUES (5, 24, '2023-07-27', 24, 3, 9, 300);
+
 
 INSERT INTO Diet (Name, Description, Calories) VALUES ('Energía Vital','Desayuno: Tostadas integrales con aguacate y huevo, jugo de naranja natural; Merienda: Batido de frutas con yogur griego; Almuerzo: Ensalada de quinoa con vegetales asados y pechuga de pollo a la plancha, una pieza de fruta; Cena: Salmón al horno con espárragos y arroz integral, ensalada verde; Snack: Yogur griego con miel y nueces', 2000);
 INSERT INTO Diet (Name, Description, Calories) VALUES ('Bienestar Activo','Desayuno: Avena con frutas y nueces, té verde; Merienda: Puñado de almendras; Almuerzo: Wrap de pollo con verduras y hummus, una porción de melón; Cena: Ensalada de espinacas con salmón ahumado, queso feta y nueces, pan integral; Snack: Batido de proteínas con plátano y espinacas', 1900);
@@ -42,6 +58,12 @@ INSERT INTO Diet (Name, Description, Calories) VALUES ('Equilibrio Vital','Desay
 INSERT INTO Diet (Name, Description, Calories) VALUES ('Vida Saludable','Desayuno: Batido verde con espinacas, plátano y proteína en polvo, tostadas de pan integral con mantequilla de almendras; Merienda: Yogur griego con frutas; Almuerzo: Wrap de tofu con aguacate, ensalada de col y zanahoria rallada, un puñado de almendras; Cena: Curry de lentejas con arroz integral, una mandarina; Snack: Yogur griego con granola y miel', 1800);
 
 INSERT INTO user_diet(Diet_id,User_id) VALUES (3,5)
+INSERT INTO user_diet(Diet_id,User_id) VALUES (3,2)
+INSERT INTO user_diet(Diet_id,User_id) VALUES (1,1)
+INSERT INTO user_diet(Diet_id,User_id) VALUES (5,2)
+INSERT INTO user_diet(Diet_id,User_id) VALUES (5,4)
+INSERT INTO user_diet(Diet_id,User_id) VALUES (4,1)
+INSERT INTO user_diet(Diet_id,User_id) VALUES (5,3)
 
 INSERT INTO ApiKeys (apikey, numberUses, isActive, isReading, isCreate, isDelete, isModify) VALUES ('hfg845903495ljsedfgskurit66',100,true,true,true,true,true);
 INSERT INTO ApiKeys (apikey, numberUses, isActive, isReading, isCreate, isDelete, isModify) VALUES ('liaurthnlCVKJUyrIOLWETJHG23',0,false,true,true,true,true);
